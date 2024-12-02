@@ -25,7 +25,6 @@ void imprimir(Lista *inicio)
     }
 }	
 
-// Função para verificar se a lista está ordenada
 int estaOrdenada(Lista *inicio)
 {
     if (inicio == NULL || inicio->prox == NULL)
