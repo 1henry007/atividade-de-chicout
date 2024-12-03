@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 50
+
+typedef struct {
+    int data[MAX];
+    int tamanho;
+} Lista;
+
+void iniciar(Lista *lista) {
+    lista->tamanho = 0;
+}
+
+void exibir(const Lista *lista) {
+    for (int i = 0; i < lista->tamanho; i++) {
+        printf("%d ", lista->data[i]);
+    }
+    printf("\n");
+}
+
+void inserirC(Lista *lista, int x) {
+    if (lista->tamanho >= MAX) {
+        printf("Erro: Lista cheia.\n");
+        return;
+    }
+
+    int i = 0;
+    while (i < lista->tamanho && lista->data[i] < x) {
+        i++;
+    }
+
+    for (int j = lista->tamanho; j > i; j--) {
+        lista->data[j] = lista->data[j - 1];
+    }
+    
+    lista->data[i] = x;
+    lista->tamanho++;
+}
+
+void inserirD(Lista *lista, int x) {
+    if (lista->tamanho >= MAX) {
+        printf("Erro: Lista cheia.\n");
+        return;
+    }
+
+    int i = 0;
+    while (i < lista->tamanho && lista->data[i] > x) {
+        i++;
+    }
+
+    for (int j = lista->tamanho; j > i; j--) {
+        lista->data[j] = lista->data[j - 1];
+    }
+
+    lista->data[i] = x;
+    lista->tamanho++;
+}
+
+int main() {
+    Lista lista;
+    iniciar(&lista);
+
+    printf("Inserindo em ordem crescente:\n");
+    inserirC(&lista, 10);
+    inserirC(&lista, 5);
+    inserirC(&lista, 20);
+    inserirC(&lista, 15);
+    exibir(&lista);
+
+    iniciar(&lista);
+    printf("\nInserindo em ordem decrescente:\n");
+    inserirD(&lista, 10);
+    inserirD(&lista, 5);
+    inserirD(&lista, 20);
+    inserirD(&lista, 15);
+    exibir(&lista);
+
+    return 0;
+}
+
