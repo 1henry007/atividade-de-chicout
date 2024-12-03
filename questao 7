@@ -1,1 +1,67 @@
+#include <stdio.h>
+#include <stdlib.h>
 
+typedef struct No {
+    int dado;
+    struct No* proximo;
+} No;
+
+int estaCrescente(No* cabeca) {
+    if (cabeca == NULL || cabeca->proximo == NULL) {
+        return 1;
+    }
+
+    No* atual = cabeca;
+    while (atual->proximo != NULL) {
+        if (atual->dado > atual->proximo->dado) {
+            return 0;
+        }
+        atual = atual->proximo;
+    }
+
+    return 1;
+}
+
+No* criarNo(int dado) {
+    No* novoNo = (No*)malloc(sizeof(No));
+    novoNo->dado = dado;
+    novoNo->proximo = NULL;
+    return novoNo;
+}
+
+void adicionarNo(No** cabeca, int dado) {
+    No* novoNo = criarNo(dado);
+    if (*cabeca == NULL) {
+        *cabeca = novoNo;
+        return;
+    }
+    No* temp = *cabeca;
+    while (temp->proximo != NULL) {
+        temp = temp->proximo;
+    }
+    temp->proximo = novoNo;
+}
+
+int main() {
+    No* cabeca = NULL;
+
+    adicionarNo(&cabeca, 1);
+    adicionarNo(&cabeca, 2);
+    adicionarNo(&cabeca, 3);
+    adicionarNo(&cabeca, 4);
+
+    if (estaCrescente(cabeca)) {
+        printf("A lista está em ordem crescente.\n");
+    } else {
+        printf("A lista não está em ordem crescente.\n");
+    }
+
+    No* temp;
+    while (cabeca != NULL) {
+        temp = cabeca;
+        cabeca = cabeca->proximo;
+        free(temp);
+    }
+
+    return 0;
+}
