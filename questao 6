@@ -1,1 +1,164 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_CONTATOS 100
+
+typedef struct {
+    char nome[50];
+    char telefone[15];
+    char email[50];
+} Contato;
+
+Contato contatos[MAX_CONTATOS];
+int totalContatos = 0;
+
+void inserirContato() {
+    if (totalContatos >= MAX_CONTATOS) {
+        printf("Lista de contatos cheia!\n");
+        return;
+    }
+    
+    Contato novoContato;
+    printf("Digite o nome: ");
+    scanf(" %[^\n]", novoContato.nome);
+    printf("Digite o telefone: ");
+    scanf(" %[^\n]", novoContato.telefone);
+    printf("Digite o email: ");
+    scanf(" %[^\n]", novoContato.email);
+
+    contatos[totalContatos++] = novoContato;
+    printf("Contato adicionado com sucesso!\n");
+}
+
+void removerContato() {
+    char nome[50];
+    printf("Digite o nome do contato a ser removido: ");
+    scanf(" %[^\n]", nome);
+
+    for (int i = 0; i < totalContatos; i++) {
+        if (strcmp(contatos[i].nome, nome) == 0) {
+            for (int j = i; j < totalContatos - 1; j++) {
+                contatos[j] = contatos[j + 1];
+            }
+            totalContatos--;
+            printf("Contato removido com sucesso!\n");
+            return;
+        }
+    }
+    printf("Contato não encontrado.\n");
+}
+
+void buscarContato() {
+    char nome[50];
+    printf("Digite o nome do contato a ser buscado: ");
+    scanf(" %[^\n]", nome);
+
+    for (int i = 0; i < totalContatos; i++) {
+        if (strcmp(contatos[i].nome, nome) == 0) {
+            printf("Contato encontrado:\n");
+            printf("Nome: %s\n", contatos[i].nome);
+            printf("Telefone: %s\n", contatos[i].telefone);
+            printf("Email: %s\n", contatos[i].email);
+            return;
+        }
+    }
+    printf("Contato não encontrado.\n");
+}
+
+void atualizarNome() {
+    char nome[50];
+    printf("Digite o nome do contato a ser atualizado: ");
+    scanf(" %[^\n]", nome);
+
+    for (int i = 0; i < totalContatos; i++) {
+        if (strcmp(contatos[i].nome, nome) == 0) {
+            printf("Digite o novo nome: ");
+            scanf(" %[^\n]", contatos[i].nome);
+            printf("Nome atualizado com sucesso!\n");
+            return;
+        }
+    }
+    printf("Contato não encontrado.\n");
+}
+
+void atualizarTelefone() {
+    char nome[50];
+    printf("Digite o nome do contato a ser atualizado: ");
+    scanf(" %[^\n]", nome);
+
+    for (int i = 0; i < totalContatos; i++) {
+        if (strcmp(contatos[i].nome, nome) == 0) {
+            printf("Digite o novo telefone: ");
+            scanf(" %[^\n]", contatos[i].telefone);
+            printf("Telefone atualizado com sucesso!\n");
+            return;
+        }
+    }
+    printf("Contato não encontrado.\n");
+}
+
+void atualizarEmail() {
+    char nome[50];
+    printf("Digite o nome do contato a ser atualizado: ");
+    scanf(" %[^\n]", nome);
+
+    for (int i = 0; i < totalContatos; i++) {
+        if (strcmp(contatos[i].nome, nome) == 0) {
+            printf("Digite o novo email: ");
+            scanf(" %[^\n]", contatos[i].email);
+            printf("Email atualizado com sucesso!\n");
+            return;
+        }
+    }
+    printf("Contato não encontrado.\n");
+}
+
+void menu() {
+    int opcao;
+
+    do {
+        printf("\n----- Agenda de Contatos -----\n");
+        printf("1. Inserir contato\n");
+        printf("2. Remover contato\n");
+        printf("3. Buscar contato\n");
+        printf("4. Atualizar nome\n");
+        printf("5. Atualizar telefone\n");
+        printf("6. Atualizar email\n");
+        printf("7. Sair\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
+
+        switch (opcao) {
+            case 1:
+                inserirContato();
+                break;
+            case 2:
+                removerContato();
+                break;
+            case 3:
+                buscarContato();
+                break;
+            case 4:
+                atualizarNome();
+                break;
+            case 5:
+                atualizarTelefone();
+                break;
+            case 6:
+                atualizarEmail();
+                break;
+            case 7:
+                printf("Saindo do programa...\n");
+                break;
+            default:
+                printf("Opção inválida. Tente novamente.\n");
+        }
+    } while (opcao != 7);
+}
+
+int main() {
+    menu();
+    return 0;
+}
 
