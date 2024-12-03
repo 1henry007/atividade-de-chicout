@@ -1,1 +1,72 @@
+#include <stdio.h>
+#include <stdlib.h>
 
+typedef struct No {
+    int dado;
+    struct No* proximo;
+} No;
+
+No* criarNo(int dado) {
+    No* novoNo = (No*)malloc(sizeof(No));
+    novoNo->dado = dado;
+    novoNo->proximo = NULL;
+    return novoNo;
+}
+
+void imprimirLista(No* cabeca) {
+    while (cabeca != NULL) {
+        printf("%d -> ", cabeca->dado);
+        cabeca = cabeca->proximo;
+    }
+    printf("NULL\n");
+}
+
+No* buscarIterativo(No* cabeca, int alvo) {
+    while (cabeca != NULL) {
+        if (cabeca->dado == alvo) {
+            return cabeca;
+        } else if (cabeca->dado > alvo) {
+            break;
+        }
+        cabeca = cabeca->proximo;
+    }
+    return NULL;
+}
+
+No* buscarRecursivo(No* cabeca, int alvo) {
+    if (cabeca == NULL || cabeca->dado > alvo) {
+        return NULL;
+    }
+    if (cabeca->dado == alvo) {
+        return cabeca;
+    }
+    return buscarRecursivo(cabeca->proximo, alvo);
+}
+
+int main() {
+    No* cabeca = criarNo(1);
+    cabeca->proximo = criarNo(3);
+    cabeca->proximo->proximo = criarNo(5);
+    cabeca->proximo->proximo->proximo = criarNo(7);
+
+    printf("Lista encadeada: ");
+    imprimirLista(cabeca);
+
+    int alvo = 5;
+
+    No* resultadoIterativo = buscarIterativo(cabeca, alvo);
+    if (resultadoIterativo) {
+        printf("Valor %d encontrado (iterativo).\n", resultadoIterativo->dado);
+    } else {
+        printf("Valor %d não encontrado (iterativo).\n", alvo);
+    }
+
+    No* resultadoRecursivo = buscarRecursivo(cabeca, alvo);
+    if (resultadoRecursivo) {
+        printf("Valor %d encontrado (recursivo).\n", resultadoRecursivo->dado);
+    } else {
+        printf("Valor %d não encontrado (recursivo).\n", alvo);
+    }
+
+    return 0;
+}
