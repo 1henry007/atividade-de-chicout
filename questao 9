@@ -1,1 +1,77 @@
+#include <stdio.h>
+#include <stdlib.h>
 
+typedef struct No {
+    int dado;
+    struct No* proximo;
+} No;
+
+No* criarNo(int dado) {
+    No* novoNo = (No*)malloc(sizeof(No));
+    novoNo->dado = dado;
+    novoNo->proximo = NULL;
+    return novoNo;
+}
+
+void imprimirLista(No* cabeca) {
+    while (cabeca != NULL) {
+        printf("%d -> ", cabeca->dado);
+        cabeca = cabeca->proximo;
+    }
+    printf("NULL\n");
+}
+
+No* encontrarMinimoIterativo(No* cabeca) {
+    if (cabeca == NULL) {
+        return NULL;
+    }
+
+    No* minimo = cabeca;
+    No* atual = cabeca->proximo;
+
+    while (atual != NULL) {
+        if (atual->dado < minimo->dado) {
+            minimo = atual;
+        }
+        atual = atual->proximo;
+    }
+
+    return minimo;
+}
+
+No* encontrarMinimoRecursivo(No* cabeca) {
+    if (cabeca == NULL || cabeca->proximo == NULL) {
+        return cabeca;
+    }
+
+    No* minimoDoResto = encontrarMinimoRecursivo(cabeca->proximo);
+
+    return (cabeca->dado < minimoDoResto->dado) ? cabeca : minimoDoResto;
+}
+
+int main() {
+
+    No* cabeca = criarNo(10);
+    cabeca->proximo = criarNo(3);
+    cabeca->proximo->proximo = criarNo(7);
+    cabeca->proximo->proximo->proximo = criarNo(1);
+
+    printf("Lista encadeada: ");
+    imprimirLista(cabeca);
+
+    No* minimoIterativo = encontrarMinimoIterativo(cabeca);
+    if (minimoIterativo) {
+        printf("Valor mínimo (iterativo): %d\n", minimoIterativo->dado);
+    } else {
+        printf("A lista está vazia (iterativo).\n");
+    }
+
+    No* minimoRecursivo = encontrarMinimoRecursivo(cabeca);
+    if (minimoRecursivo) {
+        printf("Valor mínimo (recursivo): %d\n", minimoRecursivo->dado);
+    } else {
+        printf("A lista está vazia (recursivo).\n");
+    }
+
+    return 0;
+}
