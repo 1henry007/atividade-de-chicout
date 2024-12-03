@@ -1,1 +1,60 @@
+#include <stdio.h>
+#include <stdlib.h>
 
+typedef struct No {
+    int dado;
+    struct No* proximo;
+} No;
+
+No* encontrarPontoMedio(No* cabeca) {
+    if (cabeca == NULL) {
+        return NULL;
+    }
+
+    No* lento = cabeca;
+    No* rapido = cabeca;
+
+    while (rapido != NULL && rapido->proximo != NULL) {
+        lento = lento->proximo;
+        rapido = rapido->proximo->proximo;
+    }
+
+    return lento;
+}
+
+No* criarNo(int dado) {
+    No* novoNo = (No*)malloc(sizeof(No));
+    novoNo->dado = dado;
+    novoNo->proximo = NULL;
+    return novoNo;
+}
+
+void liberarLista(No* cabeca) {
+    No* temporario;
+    while (cabeca != NULL) {
+        temporario = cabeca;
+        cabeca = cabeca->proximo;
+        free(temporario);
+    }
+}
+
+int main() {
+
+    No* lista = criarNo(1);
+    lista->proximo = criarNo(2);
+    lista->proximo->proximo = criarNo(3);
+    lista->proximo->proximo->proximo = criarNo(4);
+    lista->proximo->proximo->proximo->proximo = criarNo(5);
+
+    No* pontoMedio = encontrarPontoMedio(lista);
+
+    if (pontoMedio != NULL) {
+        printf("O ponto médio da lista contém o valor: %d\n", pontoMedio->dado);
+    } else {
+        printf("A lista está vazia.\n");
+    }
+
+    liberarLista(lista);
+
+    return 0;
+}
