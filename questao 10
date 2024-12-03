@@ -1,1 +1,71 @@
+#include <stdio.h>
+#include <stdlib.h>
 
+typedef struct No {
+    int dado;
+    struct No* proximo;
+} No;
+
+int listasSaoIguaisIterativa(No* cabeca1, No* cabeca2) {
+    while (cabeca1 != NULL && cabeca2 != NULL) {
+        if (cabeca1->dado != cabeca2->dado) {
+            return 0;
+        }
+        cabeca1 = cabeca1->proximo;
+        cabeca2 = cabeca2->proximo;
+    }
+    return (cabeca1 == NULL && cabeca2 == NULL);
+}
+
+int listasSaoIguaisRecursiva(No* cabeca1, No* cabeca2) {
+    if (cabeca1 == NULL && cabeca2 == NULL) {
+        return 1;
+    }
+    if (cabeca1 == NULL || cabeca2 == NULL) {
+        return 0;
+    }
+    return (cabeca1->dado == cabeca2->dado) && listasSaoIguaisRecursiva(cabeca1->proximo, cabeca2->proximo);
+}
+
+No* criarNo(int dado) {
+    No* novoNo = (No*)malloc(sizeof(No));
+    novoNo->dado = dado;
+    novoNo->proximo = NULL;
+    return novoNo;
+}
+
+void liberarLista(No* cabeca) {
+    No* temporario;
+    while (cabeca != NULL) {
+        temporario = cabeca;
+        cabeca = cabeca->proximo;
+        free(temporario);
+    }
+}
+
+int main() {
+    No* lista1 = criarNo(1);
+    lista1->proximo = criarNo(2);
+    lista1->proximo->proximo = criarNo(3);
+
+    No* lista2 = criarNo(1);
+    lista2->proximo = criarNo(2);
+    lista2->proximo->proximo = criarNo(3);
+
+    if (listasSaoIguaisIterativa(lista1, lista2)) {
+        printf("As listas são iguais (iterativa).\n");
+    } else {
+        printf("As listas são diferentes (iterativa).\n");
+    }
+
+    if (listasSaoIguaisRecursiva(lista1, lista2)) {
+        printf("As listas são iguais (recursiva).\n");
+    } else {
+        printf("As listas são diferentes (recursiva).\n");
+    }
+
+    liberarLista(lista1);
+    liberarLista(lista2);
+
+    return 0;
+}
